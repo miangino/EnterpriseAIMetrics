@@ -368,6 +368,10 @@
 "cost_status_unsupported" = "%@: unsupported";
 "credits_remaining" = "Credits: %@";
 "%@ credits used since Monday" = "%@ credits used since Monday";
+"Monday to date" = "Monday to date";
+"Pending" = "Pending";
+"~ %@ credits*" = "~ %@ credits*";
+"* Estimated from usage" = "* Estimated from usage";
 "cursor_on_demand" = "On-demand: %@";
 "cursor_on_demand_with_limit" = "On-demand: %1$@ / %2$@";
 "extra_usage_format" = "Extra usage: %1$@ / %2$@";
@@ -552,13 +556,12 @@
 "about_tagline" = "May your tokens never run out—keep agent limits in view.";
 "link_github" = "GitHub";
 "link_website" = "Website";
-"link_twitter" = "Twitter";
 "link_email" = "Email";
 "check_updates_auto" = "Check for updates automatically";
 "update_channel" = "Update Channel";
 "check_for_updates" = "Check for Updates…";
 "updates_unavailable" = "Updates unavailable in this build.";
-"copyright" = "© 2026 Peter Steinberger. MIT License.";
+"copyright" = "© 2026 Miguel Angel Giraldo. Forked from CodexBar by Peter Steinberger. MIT License.";
 
 /* Debug Pane */
 "section_logging" = "Logging";

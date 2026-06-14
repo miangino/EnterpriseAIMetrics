@@ -41,11 +41,7 @@ extension UsageMenuCardView.Model {
               self.metrics.count == candidate.metrics.count,
               self.usageNotes == candidate.usageNotes,
               (self.openAIAPIUsage == nil) == (candidate.openAIAPIUsage == nil),
-              Self.hasCompatibleCreditsLayout(
-                  currentText: self.creditsText,
-                  currentRemaining: self.creditsRemaining,
-                  candidateText: candidate.creditsText,
-                  candidateRemaining: candidate.creditsRemaining),
+              Self.hasCompatibleCreditsLayout(current: self, candidate: candidate),
               self.creditsHintText == candidate.creditsHintText,
               self.placeholder == candidate.placeholder,
               Self.hasCompatibleDashboardLayout(self.inlineUsageDashboard, candidate.inlineUsageDashboard),
@@ -68,22 +64,42 @@ extension UsageMenuCardView.Model {
         }
     }
 
-    private static func hasCompatibleCreditsLayout(
-        currentText: String?,
-        currentRemaining: Double?,
-        candidateText: String?,
-        candidateRemaining: Double?) -> Bool
-    {
-        switch (currentText, candidateText) {
+    private static func hasCompatibleCreditsLayout(current: Self, candidate: Self) -> Bool {
+        switch (current.creditsText, candidate.creditsText) {
         case (nil, nil):
             return true
         case let (currentText?, candidateText?):
-            guard (currentRemaining == nil) == (candidateRemaining == nil) else { return false }
+            guard (current.creditsRemaining == nil) == (candidate.creditsRemaining == nil) else { return false }
+            guard current.creditsDailyUsageHeaderText == candidate.creditsDailyUsageHeaderText else { return false }
+            guard current.creditsDailyUsageFootnoteText == candidate.creditsDailyUsageFootnoteText else { return false }
+            guard Self.hasCompatibleDailyCreditRows(
+                current.creditsDailyUsageRows,
+                candidate.creditsDailyUsageRows)
+            else {
+                return false
+            }
             // Numeric balances render as a fixed single line beside the full-scale label.
             // Multiline workspace balances retain their measured text until the menu reopens.
-            return currentRemaining != nil || currentText == candidateText
+            return current.creditsRemaining != nil || currentText == candidateText
         default:
             return false
+        }
+    }
+
+    private static func hasCompatibleDailyCreditRows(
+        _ current: [DailyCreditUsageRow]?,
+        _ candidate: [DailyCreditUsageRow]?) -> Bool
+    {
+        switch (current, candidate) {
+        case (nil, nil):
+            true
+        case let (current?, candidate?):
+            current.count == candidate.count &&
+                zip(current, candidate).allSatisfy {
+                    $0.dayText == $1.dayText && $0.isEstimated == $1.isEstimated
+                }
+        default:
+            false
         }
     }
 

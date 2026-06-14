@@ -117,10 +117,10 @@ struct UsageMenuCardView: View {
         let inlineUsageDashboard: InlineUsageDashboardModel?
         let creditsText: String?
         let creditsRemaining: Double?
-        let creditsUsageSinceMondayText: String?
+        let creditsUsageSinceMondayText, creditsDailyUsageHeaderText: String?
         let creditsDailyUsageRows: [DailyCreditUsageRow]?
-        let creditsHintText: String?
-        let creditsHintCopyText: String?
+        let creditsDailyUsageFootnoteText: String?
+        let creditsHintText, creditsHintCopyText: String?
         let providerCost: ProviderCostSection?
         let tokenUsage: TokenUsageSection?
         let placeholder: String?
@@ -141,7 +141,9 @@ struct UsageMenuCardView: View {
             creditsText: String?,
             creditsRemaining: Double?,
             creditsUsageSinceMondayText: String? = nil,
+            creditsDailyUsageHeaderText: String? = nil,
             creditsDailyUsageRows: [DailyCreditUsageRow]? = nil,
+            creditsDailyUsageFootnoteText: String? = nil,
             creditsHintText: String?,
             creditsHintCopyText: String?,
             providerCost: ProviderCostSection?,
@@ -162,10 +164,12 @@ struct UsageMenuCardView: View {
             self.inlineUsageDashboard = inlineUsageDashboard
             self.creditsText = creditsText
             self.creditsRemaining = creditsRemaining
-            self.creditsUsageSinceMondayText = creditsUsageSinceMondayText
+            (self.creditsUsageSinceMondayText, self.creditsDailyUsageHeaderText) = (
+                creditsUsageSinceMondayText,
+                creditsDailyUsageHeaderText)
             self.creditsDailyUsageRows = creditsDailyUsageRows
-            self.creditsHintText = creditsHintText
-            self.creditsHintCopyText = creditsHintCopyText
+            self.creditsDailyUsageFootnoteText = creditsDailyUsageFootnoteText
+            (self.creditsHintText, self.creditsHintCopyText) = (creditsHintText, creditsHintCopyText)
             self.providerCost = providerCost
             self.tokenUsage = tokenUsage
             self.placeholder = placeholder
@@ -238,7 +242,9 @@ struct UsageMenuCardView: View {
                             creditsText: credits,
                             creditsRemaining: self.model.creditsRemaining,
                             creditsUsageSinceMondayText: self.model.creditsUsageSinceMondayText,
+                            creditsDailyUsageHeaderText: self.model.creditsDailyUsageHeaderText,
                             creditsDailyUsageRows: self.model.creditsDailyUsageRows,
+                            creditsDailyUsageFootnoteText: self.model.creditsDailyUsageFootnoteText,
                             hintText: self.model.creditsHintText,
                             hintCopyText: self.model.creditsHintCopyText,
                             progressColor: self.model.progressColor)
@@ -656,7 +662,9 @@ struct UsageMenuCardCreditsSectionView: View {
                     creditsText: credits,
                     creditsRemaining: self.model.creditsRemaining,
                     creditsUsageSinceMondayText: self.model.creditsUsageSinceMondayText,
+                    creditsDailyUsageHeaderText: self.model.creditsDailyUsageHeaderText,
                     creditsDailyUsageRows: self.model.creditsDailyUsageRows,
+                    creditsDailyUsageFootnoteText: self.model.creditsDailyUsageFootnoteText,
                     hintText: self.model.creditsHintText,
                     hintCopyText: self.model.creditsHintCopyText,
                     progressColor: self.model.progressColor)
@@ -876,6 +884,7 @@ extension UsageMenuCardView.Model {
         let creditsText = PersonalInfoRedactor.redactEmails(in: rawCreditsText, isEnabled: input.hidePersonalInfo)
         let creditsUsageSinceMondayText = Self.creditsUsageSinceMondayText(input: input)
         let creditsDailyUsageRows = Self.creditsDailyUsageRows(input: input)
+        let creditsDailyUsageFootnoteText = Self.creditsDailyUsageFootnoteText(input: input)
         let isClaudeAdminAPI = input.provider == .claude &&
             input.snapshot?.identity?.loginMethod == "Admin API"
         let hidesOptionalProviderCost = ((input.provider == .claude && !isClaudeAdminAPI) ||
@@ -918,7 +927,9 @@ extension UsageMenuCardView.Model {
             creditsText: creditsText,
             creditsRemaining: input.credits?.remaining,
             creditsUsageSinceMondayText: creditsUsageSinceMondayText,
+            creditsDailyUsageHeaderText: Self.creditsDailyUsageHeaderText(input: input),
             creditsDailyUsageRows: creditsDailyUsageRows,
+            creditsDailyUsageFootnoteText: creditsDailyUsageFootnoteText,
             creditsHintText: redacted.creditsHintText,
             creditsHintCopyText: redacted.creditsHintCopyText,
             providerCost: providerCost,
@@ -1059,33 +1070,6 @@ extension UsageMenuCardView.Model {
             return Self.planDisplay(plan, for: provider)
         }
         return nil
-    }
-
-    private static func planDisplay(_ text: String, for provider: UsageProvider) -> String {
-        if provider == .minimax {
-            return self.miniMaxPlanDisplay(text)
-        }
-        let cleaned = if provider == .codex {
-            CodexPlanFormatting.displayName(text) ?? UsageFormatter.cleanPlanName(text)
-        } else {
-            UsageFormatter.cleanPlanName(text)
-        }
-        return cleaned.isEmpty ? text : cleaned
-    }
-
-    private static func miniMaxPlanDisplay(_ text: String) -> String {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        let normalized = trimmed.lowercased()
-        if normalized.contains("tokenplanplus") || normalized.contains("token plan plus") {
-            return "Plus"
-        }
-        if normalized.contains("tokenplanmax") || normalized.contains("token plan max") {
-            return "Max"
-        }
-        if normalized.contains("tokenplanultra") || normalized.contains("token plan ultra") {
-            return "Ultra"
-        }
-        return trimmed
     }
 
     private static func kiloLoginPass(snapshot: UsageSnapshot?) -> String? {

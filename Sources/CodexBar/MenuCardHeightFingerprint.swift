@@ -17,6 +17,10 @@ extension UsageMenuCardView.Model {
             MenuCardHeightFingerprint.field("placeholder", self.placeholder),
             MenuCardHeightFingerprint.field("credits", self.creditsText),
             "creditsRemaining=\(self.creditsRemaining.map(String.init(describing:)) ?? "nil")",
+            MenuCardHeightFingerprint.field("creditsSinceMonday", self.creditsUsageSinceMondayText),
+            MenuCardHeightFingerprint.field("creditsHeader", self.creditsDailyUsageHeaderText),
+            "creditsRows=\(MenuCardHeightFingerprint.join(self.creditsDailyUsageRows?.map(\.heightFingerprint) ?? []))",
+            MenuCardHeightFingerprint.field("creditsFootnote", self.creditsDailyUsageFootnoteText),
             MenuCardHeightFingerprint.field("creditsHint", self.creditsHintText),
             MenuCardHeightFingerprint.field("creditsCopy", self.creditsHintCopyText),
             "metrics=\(MenuCardHeightFingerprint.join(self.metrics.map(\.heightFingerprint)))",
@@ -112,6 +116,16 @@ extension UsageMenuCardView.Model.TokenUsageSection {
             MenuCardHeightFingerprint.field("hint", self.hintLine),
             MenuCardHeightFingerprint.field("error", self.errorLine),
             MenuCardHeightFingerprint.field("errorCopy", self.errorCopyText),
+        ])
+    }
+}
+
+extension UsageMenuCardView.Model.DailyCreditUsageRow {
+    fileprivate var heightFingerprint: String {
+        MenuCardHeightFingerprint.join([
+            MenuCardHeightFingerprint.field("day", self.dayText),
+            MenuCardHeightFingerprint.field("credits", self.creditsText),
+            self.isEstimated ? "estimated=1" : "estimated=0",
         ])
     }
 }

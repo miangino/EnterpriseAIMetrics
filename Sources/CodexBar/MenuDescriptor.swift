@@ -521,6 +521,9 @@ struct MenuDescriptor {
     {
         var entries: [Entry] = []
         let targetProvider = provider ?? store.enabledProviders().first
+        if targetProvider == .codex {
+            return Section(entries: [])
+        }
         let metadata = targetProvider.map { store.metadata(for: $0) }
         let fallbackAccount = targetProvider.map { store.accountInfo(for: $0) } ?? account
         let loginContext = targetProvider.map {

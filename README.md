@@ -232,4 +232,4 @@ CLI install:
 Inspired by [ccusage](https://github.com/ryoppippi/ccusage) (MIT), specifically the cost usage tracking.
 
 ## License
-MIT • Peter Steinberger ([steipete](https://twitter.com/steipete))
+MIT • Miguel Angel Giraldo. Based on a fork of CodexBar by Peter Steinberger ([steipete](https://steipete.me/)).
