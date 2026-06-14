@@ -30,6 +30,10 @@ Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and
 ### GitHub Releases
 Download: <https://github.com/miangino/EnterpriseAIMetrics/releases>
 
+Detailed install guides:
+- [INSTALL-MAC.md](INSTALL-MAC.md)
+- [INSTALL-LINUX.md](INSTALL-LINUX.md)
+
 ### Homebrew
 ```bash
 brew install --cask enterpriseaimetrics
