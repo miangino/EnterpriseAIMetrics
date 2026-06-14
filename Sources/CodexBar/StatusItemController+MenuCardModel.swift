@@ -38,14 +38,14 @@ extension StatusItemController {
             now: now)
         let credits: CreditsSnapshot?
         let creditsError: String?
-        let dashboard: OpenAIDashboardSnapshot?
+        var dashboard: OpenAIDashboardSnapshot?
         let dashboardError: String?
         let tokenSnapshot: CostUsageTokenSnapshot?
         let tokenError: String?
         if let codexProjection {
             credits = codexProjection.credits?.snapshot
             creditsError = codexProjection.credits?.userFacingError
-            dashboard = nil
+            dashboard = surface == .liveCard ? self.store.openAIDashboard : nil
             dashboardError = codexProjection.userFacingErrors.dashboard
             if surface == .liveCard {
                 tokenSnapshot = projectedTokenSnapshot ?? storedTokenSnapshot

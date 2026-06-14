@@ -377,11 +377,11 @@ struct UsageBreakdownChartMenuView: View {
         let dayLabel = date.formatted(.dateTime.month(.abbreviated).day())
         let total = day.totalCreditsUsed.formatted(.number.precision(.fractionLength(0...2)))
         if day.services.isEmpty {
-            return ("\(dayLabel): \(total)", nil)
+            return ("\(dayLabel): \(total) credits", nil)
         }
         if day.services.count <= 1, let first = day.services.first {
             let used = first.creditsUsed.formatted(.number.precision(.fractionLength(0...2)))
-            return ("\(dayLabel): \(used)", first.service)
+            return ("\(dayLabel): \(used) credits", first.service)
         }
 
         let services = day.services
@@ -390,9 +390,9 @@ struct UsageBreakdownChartMenuView: View {
                 return lhs.creditsUsed > rhs.creditsUsed
             }
             .prefix(3)
-            .map { "\($0.service) \($0.creditsUsed.formatted(.number.precision(.fractionLength(0...2))))" }
+            .map { "\($0.service) \($0.creditsUsed.formatted(.number.precision(.fractionLength(0...2)))) credits" }
             .joined(separator: " · ")
 
-        return ("\(dayLabel): \(total)", services)
+        return ("\(dayLabel): \(total) credits", services)
     }
 }

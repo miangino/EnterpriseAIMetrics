@@ -25,7 +25,7 @@ let package = Package(
 
         #if os(macOS)
         products.append(contentsOf: [
-            .executable(name: "CodexBar", targets: ["CodexBar"]),
+            .executable(name: "EnterpriseAIMetrics", targets: ["CodexBar"]),
             .executable(name: "CodexBarClaudeWatchdog", targets: ["CodexBarClaudeWatchdog"]),
             .executable(name: "CodexBarWidget", targets: ["CodexBarWidget"]),
             .executable(name: "CodexBarClaudeWebProbe", targets: ["CodexBarClaudeWebProbe"]),

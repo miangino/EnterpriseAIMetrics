@@ -1,17 +1,17 @@
-# CodexBar 🎚️ — May your tokens never run out.
+# EnterpriseAIMetrics 🎚️ — Making AI usage visible.
 
 > Every AI coding limit, in your menu bar.
 
-[![Latest release](https://img.shields.io/github/v/release/steipete/CodexBar?style=flat-square&color=0a0a0c)](https://github.com/steipete/CodexBar/releases/latest)
-[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-0a0a0c?style=flat-square)](https://github.com/steipete/CodexBar/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/miangino/EnterpriseAIMetrics?style=flat-square&color=0a0a0c)](https://github.com/miangino/EnterpriseAIMetrics/releases/latest)
+[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-0a0a0c?style=flat-square)](https://github.com/miangino/EnterpriseAIMetrics/releases/latest)
 [![Homebrew](https://img.shields.io/badge/brew-steipete%2Ftap%2Fcodexbar-orange?style=flat-square)](https://github.com/steipete/homebrew-tap)
 [![AUR](https://img.shields.io/aur/version/codexbar-cli?style=flat-square&color=1793d1)](https://aur.archlinux.org/packages/codexbar-cli)
 [![License: MIT](https://img.shields.io/badge/license-MIT-6e5aff?style=flat-square)](LICENSE)
-[![Site](https://img.shields.io/badge/site-codexbar.app-16d3b4?style=flat-square)](https://codexbar.app)
+[![Site](https://img.shields.io/badge/site-enterpriseaimetrics.app-16d3b4?style=flat-square)](https://enterpriseaimetrics.app)
 
-<a href="https://codexbar.app"><img src="docs/social.png" alt="CodexBar — every AI coding limit in your menu bar. 40+ providers." width="100%" /></a>
+<a href="https://enterpriseaimetrics.app"><img src="docs/social.png" alt="EnterpriseAIMetrics — every AI coding limit in your menu bar. 40+ providers." width="100%" /></a>
 
-Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and shows when each window resets. Codex, OpenAI, Claude, Cursor, Gemini, Copilot, Grok, GroqCloud, ElevenLabs, Deepgram, z.ai, MiniMax, Kiro, Vertex AI, Augment, OpenRouter, LLM Proxy, Codebuff, Command Code, AWS Bedrock, and many newer coding providers. One status item per provider, or Merge Icons mode with a provider switcher. No Dock icon, minimal UI, dynamic bar icons.
+Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and shows when each window resets. Built by Miguel Angel Giraldo as a fork of Peter Steinberger's CodexBar project, with bug fixes and credit usage computation added on top. Codex, OpenAI, Claude, Cursor, Gemini, Copilot, Grok, GroqCloud, ElevenLabs, Deepgram, z.ai, MiniMax, Kiro, Vertex AI, Augment, OpenRouter, LLM Proxy, Codebuff, Command Code, AWS Bedrock, and many newer coding providers. One status item per provider, or Merge Icons mode with a provider switcher. No Dock icon, minimal UI, dynamic bar icons.
 
 <img src="codexbar.png" alt="CodexBar menu popover with provider tiles, usage bars, and reset countdowns" width="520" />
 
@@ -28,11 +28,11 @@ Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and
 - macOS 14+ (Sonoma)
 
 ### GitHub Releases
-Download: <https://github.com/steipete/CodexBar/releases>
+Download: <https://github.com/miangino/EnterpriseAIMetrics/releases>
 
 ### Homebrew
 ```bash
-brew install --cask codexbar
+brew install --cask enterpriseaimetrics
 ```
 
 ### CLI Tarballs (macOS/Linux)
@@ -45,8 +45,8 @@ Arch Linux AUR package:
 yay -S codexbar-cli
 ```
 Or download release tarballs from GitHub Releases:
-- macOS: `CodexBarCLI-v<tag>-macos-arm64.tar.gz`, `CodexBarCLI-v<tag>-macos-x86_64.tar.gz`
-- Linux: `CodexBarCLI-v<tag>-linux-aarch64.tar.gz`, `CodexBarCLI-v<tag>-linux-x86_64.tar.gz`
+- macOS: `EnterpriseAIMetricsCLI-v<tag>-macos-arm64.tar.gz`, `EnterpriseAIMetricsCLI-v<tag>-macos-x86_64.tar.gz`
+- Linux: `EnterpriseAIMetricsCLI-v<tag>-linux-aarch64.tar.gz`, `EnterpriseAIMetricsCLI-v<tag>-linux-x86_64.tar.gz`
 
 ### First run
 - Open Settings → Providers and enable what you use.
@@ -192,9 +192,9 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 Requires macOS 14+ and Swift 6.2+.
 
 ```bash
-./Scripts/package_app.sh        # builds CodexBar.app in-place
+./Scripts/package_app.sh        # builds EnterpriseAIMetrics.app in-place
 CODEXBAR_SIGNING=adhoc ./Scripts/package_app.sh  # ad-hoc signing (no Apple Developer account)
-open CodexBar.app
+open EnterpriseAIMetrics.app
 ```
 
 Dev loop:
@@ -207,7 +207,7 @@ make docs-list                       # list docs with frontmatter summaries
 
 CLI install:
 ```bash
-# after installing CodexBar.app in /Applications
+# after installing EnterpriseAIMetrics.app in /Applications
 ./bin/install-codexbar-cli.sh
 ```
 

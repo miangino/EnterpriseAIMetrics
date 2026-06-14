@@ -117,12 +117,60 @@ struct UsageMenuCardView: View {
         let inlineUsageDashboard: InlineUsageDashboardModel?
         let creditsText: String?
         let creditsRemaining: Double?
+        let creditsUsageSinceMondayText: String?
+        let creditsDailyUsageRows: [DailyCreditUsageRow]?
         let creditsHintText: String?
         let creditsHintCopyText: String?
         let providerCost: ProviderCostSection?
         let tokenUsage: TokenUsageSection?
         let placeholder: String?
         let progressColor: Color
+
+        init(
+            provider: UsageProvider,
+            providerName: String,
+            email: String,
+            subtitleText: String,
+            subtitleStyle: SubtitleStyle,
+            usesLiveSubtitle: Bool = false,
+            planText: String?,
+            metrics: [Metric],
+            usageNotes: [String],
+            openAIAPIUsage: OpenAIAPIUsageSnapshot?,
+            inlineUsageDashboard: InlineUsageDashboardModel?,
+            creditsText: String?,
+            creditsRemaining: Double?,
+            creditsUsageSinceMondayText: String? = nil,
+            creditsDailyUsageRows: [DailyCreditUsageRow]? = nil,
+            creditsHintText: String?,
+            creditsHintCopyText: String?,
+            providerCost: ProviderCostSection?,
+            tokenUsage: TokenUsageSection?,
+            placeholder: String?,
+            progressColor: Color)
+        {
+            self.provider = provider
+            self.providerName = providerName
+            self.email = email
+            self.subtitleText = subtitleText
+            self.subtitleStyle = subtitleStyle
+            self.usesLiveSubtitle = usesLiveSubtitle
+            self.planText = planText
+            self.metrics = metrics
+            self.usageNotes = usageNotes
+            self.openAIAPIUsage = openAIAPIUsage
+            self.inlineUsageDashboard = inlineUsageDashboard
+            self.creditsText = creditsText
+            self.creditsRemaining = creditsRemaining
+            self.creditsUsageSinceMondayText = creditsUsageSinceMondayText
+            self.creditsDailyUsageRows = creditsDailyUsageRows
+            self.creditsHintText = creditsHintText
+            self.creditsHintCopyText = creditsHintCopyText
+            self.providerCost = providerCost
+            self.tokenUsage = tokenUsage
+            self.placeholder = placeholder
+            self.progressColor = progressColor
+        }
     }
 
     let model: Model
@@ -188,10 +236,12 @@ struct UsageMenuCardView: View {
                     if let credits = liveModel.creditsText {
                         CreditsBarContent(
                             creditsText: credits,
-                            creditsRemaining: liveModel.creditsRemaining,
-                            hintText: liveModel.creditsHintText,
-                            hintCopyText: liveModel.creditsHintCopyText,
-                            progressColor: liveModel.progressColor)
+                            creditsRemaining: self.model.creditsRemaining,
+                            creditsUsageSinceMondayText: self.model.creditsUsageSinceMondayText,
+                            creditsDailyUsageRows: self.model.creditsDailyUsageRows,
+                            hintText: self.model.creditsHintText,
+                            hintCopyText: self.model.creditsHintCopyText,
+                            progressColor: self.model.progressColor)
                     }
                     if hasCredits, hasCost {
                         Divider()
@@ -604,10 +654,12 @@ struct UsageMenuCardCreditsSectionView: View {
             VStack(alignment: .leading, spacing: 6) {
                 CreditsBarContent(
                     creditsText: credits,
-                    creditsRemaining: liveModel.creditsRemaining,
-                    hintText: liveModel.creditsHintText,
-                    hintCopyText: liveModel.creditsHintCopyText,
-                    progressColor: liveModel.progressColor)
+                    creditsRemaining: self.model.creditsRemaining,
+                    creditsUsageSinceMondayText: self.model.creditsUsageSinceMondayText,
+                    creditsDailyUsageRows: self.model.creditsDailyUsageRows,
+                    hintText: self.model.creditsHintText,
+                    hintCopyText: self.model.creditsHintCopyText,
+                    progressColor: self.model.progressColor)
                 if self.showBottomDivider {
                     Divider()
                 }
@@ -622,64 +674,6 @@ struct UsageMenuCardCreditsSectionView: View {
     private var liveModel: UsageMenuCardView.Model {
         guard self.model.usesLiveSubtitle else { return self.model }
         return self.refreshMonitor?.model(for: self.model.provider, fallback: self.model) ?? self.model
-    }
-}
-
-private struct CreditsBarContent: View {
-    private static let fullScaleTokens: Double = 1000
-
-    let creditsText: String
-    let creditsRemaining: Double?
-    let hintText: String?
-    let hintCopyText: String?
-    let progressColor: Color
-    @Environment(\.menuItemHighlighted) private var isHighlighted
-
-    private var percentLeft: Double? {
-        guard let creditsRemaining else { return nil }
-        let percent = (creditsRemaining / Self.fullScaleTokens) * 100
-        return min(100, max(0, percent))
-    }
-
-    private var scaleText: String {
-        let scale = UsageFormatter.tokenCountString(Int(Self.fullScaleTokens))
-        return "\(scale) \(L("tokens"))"
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(L("Credits"))
-                .font(.body)
-                .fontWeight(.medium)
-            if let percentLeft {
-                UsageProgressBar(
-                    percent: percentLeft,
-                    tint: self.progressColor,
-                    accessibilityLabel: L("Credits remaining"))
-                HStack(alignment: .firstTextBaseline) {
-                    Text(self.creditsText)
-                        .font(.caption)
-                        .lineLimit(1)
-                    Spacer()
-                    Text(self.scaleText)
-                        .font(.caption)
-                        .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
-                }
-            } else {
-                Text(self.creditsText)
-                    .font(.caption)
-            }
-            if let hintText, !hintText.isEmpty {
-                Text(hintText)
-                    .font(.footnote)
-                    .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
-                    .lineLimit(4)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .overlay {
-                        ClickToCopyOverlay(copyText: self.hintCopyText ?? hintText)
-                    }
-            }
-        }
     }
 }
 
@@ -880,6 +874,8 @@ extension UsageMenuCardView.Model {
                 error: input.creditsError)
         }
         let creditsText = PersonalInfoRedactor.redactEmails(in: rawCreditsText, isEnabled: input.hidePersonalInfo)
+        let creditsUsageSinceMondayText = Self.creditsUsageSinceMondayText(input: input)
+        let creditsDailyUsageRows = Self.creditsDailyUsageRows(input: input)
         let isClaudeAdminAPI = input.provider == .claude &&
             input.snapshot?.identity?.loginMethod == "Admin API"
         let hidesOptionalProviderCost = ((input.provider == .claude && !isClaudeAdminAPI) ||
@@ -921,6 +917,8 @@ extension UsageMenuCardView.Model {
             inlineUsageDashboard: inlineUsageDashboard,
             creditsText: creditsText,
             creditsRemaining: input.credits?.remaining,
+            creditsUsageSinceMondayText: creditsUsageSinceMondayText,
+            creditsDailyUsageRows: creditsDailyUsageRows,
             creditsHintText: redacted.creditsHintText,
             creditsHintCopyText: redacted.creditsHintCopyText,
             providerCost: providerCost,

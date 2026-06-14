@@ -52,6 +52,7 @@ public struct OpenAIDashboardFetcher {
         let events: [CreditEvent]
         let breakdown: [OpenAIDashboardDailyBreakdown]
         let usageBreakdown: [OpenAIDashboardDailyBreakdown]
+        let weeklyCreditsUsed: Double?
         let rateLimits: (primary: RateWindow?, secondary: RateWindow?)
         let extraRateWindows: [NamedRateWindow]
         let creditsRemaining: Double?
@@ -65,6 +66,7 @@ public struct OpenAIDashboardFetcher {
         let events: [CreditEvent]
         let breakdown: [OpenAIDashboardDailyBreakdown]
         let usageBreakdown: [OpenAIDashboardDailyBreakdown]
+        let weeklyCreditsUsed: Double?
         let rateLimits: (primary: RateWindow?, secondary: RateWindow?)
         let extraRateWindows: [NamedRateWindow]
         let creditsRemaining: Double?
@@ -83,6 +85,7 @@ public struct OpenAIDashboardFetcher {
             creditEvents: components.events,
             dailyBreakdown: components.breakdown,
             usageBreakdown: components.usageBreakdown,
+            weeklyCreditsUsed: components.weeklyCreditsUsed,
             creditsPurchaseURL: components.scrape.creditsPurchaseURL,
             primaryLimit: components.rateLimits.primary,
             secondaryLimit: components.rateLimits.secondary,
@@ -108,6 +111,7 @@ public struct OpenAIDashboardFetcher {
             secondary: apiData?.secondaryLimit ?? parsedRateLimits.secondary)
         let codeReviewLimit = OpenAIDashboardParser.parseCodeReviewLimit(bodyText: bodyText)
         let parsedCreditsRemaining = OpenAIDashboardParser.parseCreditsRemaining(bodyText: bodyText)
+        let weeklyCreditsUsed = OpenAIDashboardParser.parseWeeklyCreditsUsed(bodyText: bodyText)
         let creditsRemaining = apiData?.creditsRemaining ?? parsedCreditsRemaining
         let accountPlan = scrape.accountPlan ?? apiData?.accountPlan
         let hasParsedUsageLimits = parsedRateLimits.primary != nil || parsedRateLimits.secondary != nil
@@ -135,6 +139,7 @@ public struct OpenAIDashboardFetcher {
             events: events,
             breakdown: breakdown,
             usageBreakdown: usageBreakdown,
+            weeklyCreditsUsed: weeklyCreditsUsed,
             rateLimits: rateLimits,
             extraRateWindows: extraRateWindows,
             creditsRemaining: creditsRemaining,
@@ -379,6 +384,7 @@ public struct OpenAIDashboardFetcher {
                     events: events,
                     breakdown: dashboardData.breakdown,
                     usageBreakdown: usageBreakdown,
+                    weeklyCreditsUsed: dashboardData.weeklyCreditsUsed,
                     rateLimits: dashboardData.rateLimits,
                     extraRateWindows: dashboardData.extraRateWindows,
                     creditsRemaining: dashboardData.creditsRemaining,
@@ -531,6 +537,7 @@ public struct OpenAIDashboardFetcher {
         let creditsPurchaseURL: String?
         let rows: [[String]]
         let usageBreakdown: [OpenAIDashboardDailyBreakdown]
+        let weeklyCreditsUsed: Double?
         let usageBreakdownDebug: String?
         let usageBreakdownError: String?
         let scrollY: Double
@@ -556,6 +563,7 @@ public struct OpenAIDashboardFetcher {
                 creditsPurchaseURL: nil,
                 rows: [],
                 usageBreakdown: [],
+                weeklyCreditsUsed: nil,
                 usageBreakdownDebug: nil,
                 usageBreakdownError: nil,
                 scrollY: 0,
@@ -584,6 +592,7 @@ public struct OpenAIDashboardFetcher {
                 usageBreakdown = []
             }
         }
+        let weeklyCreditsUsed = (dict["weeklyCreditsUsed"] as? NSNumber)?.doubleValue
 
         var signedInEmail = dict["signedInEmail"] as? String
         signedInEmail = signedInEmail?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -608,6 +617,7 @@ public struct OpenAIDashboardFetcher {
             creditsPurchaseURL: dict["creditsPurchaseURL"] as? String,
             rows: rows,
             usageBreakdown: usageBreakdown,
+            weeklyCreditsUsed: weeklyCreditsUsed,
             usageBreakdownDebug: usageBreakdownDebug,
             usageBreakdownError: usageBreakdownError,
             scrollY: (dict["scrollY"] as? NSNumber)?.doubleValue ?? 0,

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="CodexBar"
+APP_NAME="EnterpriseAIMetrics"
 APP_IDENTITY="Developer ID Application: Peter Steinberger (Y5PE65HELJ)"
-APP_BUNDLE="CodexBar.app"
+APP_BUNDLE="EnterpriseAIMetrics.app"
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 source "$ROOT/version.env"
 source "$ROOT/Scripts/release_artifacts.sh"

@@ -66,6 +66,17 @@ struct OpenAIDashboardParserTests {
     }
 
     @Test
+    func `parses weekly credits used summary`() {
+        let body = """
+        Credits usage history
+        Last 7 days
+        715 credits used
+        """
+        let value = OpenAIDashboardParser.parseWeeklyCreditsUsed(bodyText: body)
+        #expect(value == 715)
+    }
+
+    @Test
     func `parses rate limits`() {
         let body = """
         Usage limits

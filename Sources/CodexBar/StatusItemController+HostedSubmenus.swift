@@ -207,7 +207,7 @@ extension StatusItemController {
         case Self.usageBreakdownChartID:
             Self.dashboardBreakdownReadinessSignature(
                 OpenAIDashboardDailyBreakdown.removingSkillUsageServices(
-                    from: self.store.openAIDashboard?.usageBreakdown ?? []))
+                    from: self.store.openAIDashboard?.displayUsageBreakdown() ?? []))
         case Self.creditsHistoryChartID:
             Self.dashboardBreakdownReadinessSignature(self.store.openAIDashboard?.dailyBreakdown ?? [])
         case Self.costHistoryChartID:
@@ -316,7 +316,7 @@ extension StatusItemController {
     @discardableResult
     func appendUsageBreakdownChartItem(to submenu: NSMenu, width: CGFloat) -> Bool {
         let breakdown = OpenAIDashboardDailyBreakdown.removingSkillUsageServices(
-            from: self.store.openAIDashboard?.usageBreakdown ?? [])
+            from: self.store.openAIDashboard?.displayUsageBreakdown() ?? [])
         guard !breakdown.isEmpty else { return false }
 
         if !Self.menuCardRenderingEnabled {

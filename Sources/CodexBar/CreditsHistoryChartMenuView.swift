@@ -326,7 +326,7 @@ struct CreditsHistoryChartMenuView: View {
                 return lhs.creditsUsed > rhs.creditsUsed
             }
             .prefix(3)
-            .map { "\($0.service) \($0.creditsUsed.formatted(.number.precision(.fractionLength(0...2))))" }
+            .map { "\($0.service) \($0.creditsUsed.formatted(.number.precision(.fractionLength(0...2)))) credits" }
             .joined(separator: " · ")
 
         return (String(format: L("%@: %@ credits"), dayLabel, total), services)

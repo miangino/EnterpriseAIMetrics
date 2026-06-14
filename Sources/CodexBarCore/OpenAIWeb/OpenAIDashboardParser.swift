@@ -86,6 +86,72 @@ public enum OpenAIDashboardParser {
         return nil
     }
 
+    /// Extracts the weekly credit consumption total when the dashboard renders an explicit summary line.
+    ///
+    /// The page copy is not fully stable, so this parser is intentionally conservative:
+    /// it only accepts lines or nearby lines that mention a weekly window.
+    public static func parseWeeklyCreditsUsed(bodyText: String) -> Double? {
+        let cleaned = bodyText.replacingOccurrences(of: "\r", with: "\n")
+        let lines = cleaned
+            .split(whereSeparator: \.isNewline)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+
+        let weeklyHints = [
+            "last 7 days",
+            "this week",
+            "current week",
+            "week to date",
+            "since monday",
+            "weekly",
+        ]
+        let creditHints = [
+            "credit",
+            "credits",
+            "consumed",
+            "spent",
+            "used",
+        ]
+
+        func lineIsWeeklyHint(_ line: String) -> Bool {
+            let lower = line.lowercased()
+            return weeklyHints.contains { lower.contains($0) }
+        }
+
+        func lineLooksCreditRelated(_ line: String) -> Bool {
+            let lower = line.lowercased()
+            return creditHints.contains { lower.contains($0) }
+        }
+
+        for (index, line) in lines.enumerated() {
+            guard lineIsWeeklyHint(line) || (lineLooksCreditRelated(line) && line.contains("7")) else {
+                continue
+            }
+
+            let end = min(lines.count - 1, index + 3)
+            for candidate in lines[index...end] {
+                guard lineLooksCreditRelated(candidate) else { continue }
+                if let value = TextParsing.firstNumber(pattern: #"([0-9][0-9.,]*)"#, text: candidate) {
+                    return value
+                }
+            }
+        }
+
+        let joined = lines.joined(separator: "\n")
+        let weeklyWindowPattern = #"(?:last\s*7\s*days|this\s*week|current\s*week|week\s*to\s*date|since\s*monday)"#
+        let patterns = [
+            #"(?i)"# + weeklyWindowPattern + #"[^0-9]*([0-9][0-9.,]*)\s*credits?"#,
+            #"(?i)([0-9][0-9.,]*)\s*credits?[^0-9]*"# + weeklyWindowPattern,
+            #"(?i)"# + weeklyWindowPattern + #"[^0-9]*([0-9][0-9.,]*)"#,
+        ]
+        for pattern in patterns {
+            if let value = TextParsing.firstNumber(pattern: pattern, text: joined) {
+                return value
+            }
+        }
+        return nil
+    }
+
     public static func parseRateLimits(
         bodyText: String,
         now: Date = .init()) -> (primary: RateWindow?, secondary: RateWindow?)

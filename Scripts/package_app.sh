@@ -149,7 +149,7 @@ stage_build_products() {
 
   stage_dir="$PRODUCT_STAGE_ROOT/$arch"
   mkdir -p "$stage_dir"
-  for name in CodexBar CodexBarCLI CodexBarClaudeWatchdog; do
+  for name in EnterpriseAIMetrics CodexBarCLI CodexBarClaudeWatchdog; do
     if ! product=$(codexbar_require_product_file "$bin_dir" "$name" "$arch"); then
       return 1
     fi
@@ -169,8 +169,8 @@ for ARCH in "${ARCH_LIST[@]}"; do
   stage_build_products "$ARCH"
 done
 
-APP_FINAL="$ROOT/CodexBar.app"
-APP_STAGE="$ROOT/.build/package/CodexBar.app"
+APP_FINAL="$ROOT/EnterpriseAIMetrics.app"
+APP_STAGE="$ROOT/.build/package/EnterpriseAIMetrics.app"
 rm -rf "$APP_STAGE"
 APP="$APP_STAGE"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Frameworks"
@@ -244,10 +244,10 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key><string>CodexBar</string>
-    <key>CFBundleDisplayName</key><string>CodexBar</string>
+    <key>CFBundleName</key><string>EnterpriseAIMetrics</string>
+    <key>CFBundleDisplayName</key><string>EnterpriseAIMetrics</string>
     <key>CFBundleIdentifier</key><string>${BUNDLE_ID}</string>
-    <key>CFBundleExecutable</key><string>CodexBar</string>
+    <key>CFBundleExecutable</key><string>EnterpriseAIMetrics</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>${MARKETING_VERSION}</string>
     <key>CFBundleVersion</key><string>${BUILD_NUMBER}</string>
@@ -408,7 +408,7 @@ install_widget_extension() {
   verify_binary_arches "$widget_app/Contents/MacOS/CodexBarWidget" "${ARCH_LIST[@]}"
 }
 
-install_binary "CodexBar" "$APP/Contents/MacOS/CodexBar"
+install_binary "EnterpriseAIMetrics" "$APP/Contents/MacOS/EnterpriseAIMetrics"
 # Ship CodexBarCLI alongside the app for easy symlinking.
 install_binary "CodexBarCLI" "$APP/Contents/Helpers/CodexBarCLI"
 # Watchdog helper: ensures `claude` probes die when CodexBar crashes/gets killed.
@@ -421,7 +421,7 @@ swiftpm_bin_path "${ARCH_LIST[0]}" PREFERRED_BUILD_DIR
 SPARKLE_SOURCE=$(codexbar_require_product_directory "$PREFERRED_BUILD_DIR" Sparkle.framework packaging)
 cp -R "$SPARKLE_SOURCE" "$APP/Contents/Frameworks/"
 chmod -R a+rX "$APP/Contents/Frameworks/Sparkle.framework"
-install_name_tool -add_rpath "@executable_path/../Frameworks" "$APP/Contents/MacOS/CodexBar"
+install_name_tool -add_rpath "@executable_path/../Frameworks" "$APP/Contents/MacOS/EnterpriseAIMetrics"
 # Re-sign Sparkle and all nested components with Developer ID + timestamp
 SPARKLE="$APP/Contents/Frameworks/Sparkle.framework"
 if [[ "$SIGNING_MODE" == "adhoc" ]]; then
