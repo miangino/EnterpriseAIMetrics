@@ -4,7 +4,6 @@
 
 [![Latest release](https://img.shields.io/github/v/release/miangino/EnterpriseAIMetrics?style=flat-square&color=0a0a0c)](https://github.com/miangino/EnterpriseAIMetrics/releases/latest)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-0a0a0c?style=flat-square)](https://github.com/miangino/EnterpriseAIMetrics/releases/latest)
-[![AUR](https://img.shields.io/aur/version/codexbar-cli?style=flat-square&color=1793d1)](https://aur.archlinux.org/packages/codexbar-cli)
 [![License: MIT](https://img.shields.io/badge/license-MIT-6e5aff?style=flat-square)](LICENSE)
 
 <a href="https://enterpriseaimetrics.app"><img src="docs/social.png" alt="EnterpriseAIMetrics — every AI coding limit in your menu bar. 40+ providers." width="100%" /></a>
@@ -26,22 +25,15 @@ Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and
 - macOS 14+ (Sonoma)
 
 ### GitHub Releases
-Download: <https://github.com/miangino/EnterpriseAIMetrics/releases>
+Download:
+- macOS DMG: <https://github.com/miangino/EnterpriseAIMetrics/releases/latest>
+- macOS ZIP: <https://github.com/miangino/EnterpriseAIMetrics/releases>
 
 Detailed install guides:
 - [INSTALL-MAC.md](INSTALL-MAC.md)
 - [INSTALL-LINUX.md](INSTALL-LINUX.md)
 
-### Homebrew
-```bash
-brew install --cask enterpriseaimetrics
-```
-
 ### CLI Tarballs (macOS/Linux)
-Homebrew formula (Linux today):
-```bash
-brew install steipete/tap/codexbar
-```
 Arch Linux AUR package:
 ```bash
 yay -S codexbar-cli

@@ -42,3 +42,9 @@ codexbar_dsym_zip_name() {
   local arches="${2:-arm64 x86_64}"
   printf "EnterpriseAIMetrics-%s-%s.dSYM.zip" "$(codexbar_release_arch_label "$arches")" "$version"
 }
+
+codexbar_dmg_name() {
+  local version=$1
+  local arches="${2:-arm64 x86_64}"
+  printf "EnterpriseAIMetrics-%s-%s.dmg" "$(codexbar_release_arch_label "$arches")" "$version"
+}

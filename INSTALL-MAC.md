@@ -14,14 +14,16 @@
 
 1. Open the releases page:
    `https://github.com/miangino/EnterpriseAIMetrics/releases`
-2. Download the latest macOS app archive.
-3. Extract it with Finder, or from Terminal:
+2. Download the latest macOS DMG.
+3. Open the DMG and drag `EnterpriseAIMetrics.app` to `Applications`.
+
+If you prefer a zip archive, the release page also includes one:
 
 ```bash
-ditto -x -k EnterpriseAIMetrics-macos-universal-<version>.zip .
+ditto -x -k EnterpriseAIMetrics-macos-arm64-<version>.zip .
 ```
 
-4. Move the app into `/Applications`:
+4. Move the app into `/Applications` if you used the zip:
 
 ```bash
 mv EnterpriseAIMetrics.app /Applications/

@@ -13,7 +13,7 @@ SwiftPM-only; package/sign/notarize manually (no Xcode project). Sparkle feed is
 **Must read first:** open the master macOS release guide at `~/Projects/agent-scripts/docs/RELEASING-MAC.md` alongside this file and reconcile any differences in favor of CodexBar specifics before starting a release.
 
 ## Expectations
-- When someone says “release CodexBar”, do the entire end-to-end flow: bump versions/CHANGELOG, build, sign and notarize, upload the zip to the GitHub release, generate/update the appcast with the new signature, publish the tag/release, and verify the enclosure URL responds with 200/OK and installs via Sparkle (no 404s or stale feeds).
+- When someone says “release CodexBar”, do the entire end-to-end flow: bump versions/CHANGELOG, build, sign and notarize, upload the zip and DMG to the GitHub release, generate/update the appcast with the new signature, publish the tag/release, and verify the enclosure URL responds with 200/OK and installs via Sparkle (no 404s or stale feeds).
 
 ### Release automation notes (Scripts/release.sh)
 - Always forces a fresh build/notarization (no cached artifacts) before publishing.
@@ -87,7 +87,7 @@ After publishing the GitHub release, `.github/workflows/release-cli.yml` builds 
   - Generate the appcast + HTML release notes: `./Scripts/make_appcast.sh CodexBar-macos-universal-<ver>.zip https://raw.githubusercontent.com/steipete/CodexBar/main/appcast.xml`
   - Beta channel: prefix the command with `SPARKLE_CHANNEL=beta` to tag the entry.
   - Verify the enclosure signature + size: `./Scripts/verify_appcast.sh <ver>`
-- [ ] Upload zip + appcast to feed; publish tag + GitHub release so Sparkle URL is live (avoid 404)
+- [ ] Upload zip + DMG + appcast to feed; publish tag + GitHub release so Sparkle URL is live (avoid 404)
 - [ ] Homebrew tap: wait for the Release CLI workflow to update `../homebrew-tap/Casks/codexbar.rb` (app zip url + sha256) and `../homebrew-tap/Formula/codexbar.rb` (CLI tarball urls + sha256), then verify:
   - `gh run watch <release-cli-run-id> --exit-status`
   - `Scripts/check-release-assets.sh v<version>`
@@ -98,7 +98,7 @@ After publishing the GitHub release, `.github/workflows/release-cli.yml` builds 
 - [ ] Changelog sanity: single top-level title, no duplicate version sections, versions strictly descending with no repeats
 - [ ] Release pages: title format `CodexBar <version>`, notes as Markdown list (no stray blank lines)
 - [ ] Changelog/release notes are user-facing: avoid internal-only bullets (build numbers, script bumps) and keep entries concise
-- [ ] Download uploaded `CodexBar-macos-universal-<ver>.zip`, unzip via `ditto`, run, and verify signature (`spctl -a -t exec -vv CodexBar.app` + `stapler validate`)
+- [ ] Download uploaded `CodexBar-macos-universal-<ver>.zip` and `CodexBar-macos-universal-<ver>.dmg`, test both install paths, and verify signature (`spctl -a -t exec -vv CodexBar.app` + `stapler validate`)
 - [ ] Confirm `appcast.xml` points to the new zip/version and renders the HTML release notes (not escaped tags)
 - [ ] Verify on GitHub Releases: assets present (zip, appcast), release notes match changelog, version/tag correct
 - [ ] Open the appcast URL in browser to confirm the new entry is visible and enclosure URL is reachable

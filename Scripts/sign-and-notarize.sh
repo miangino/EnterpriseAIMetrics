@@ -14,6 +14,7 @@ source "$ROOT/Scripts/release_dsym_paths.sh"
 ARCHES_VALUE=${ARCHES:-"arm64 x86_64"}
 ZIP_NAME=$(codexbar_app_zip_name "$MARKETING_VERSION" "$ARCHES_VALUE")
 DSYM_ZIP=$(codexbar_dsym_zip_name "$MARKETING_VERSION" "$ARCHES_VALUE")
+DMG_NAME=$(codexbar_dmg_name "$MARKETING_VERSION" "$ARCHES_VALUE")
 
 if [[ -z "${APP_STORE_CONNECT_API_KEY_P8:-}" || -z "${APP_STORE_CONNECT_KEY_ID:-}" || -z "${APP_STORE_CONNECT_ISSUER_ID:-}" ]]; then
   echo "Missing APP_STORE_CONNECT_* env vars (API key, key id, issuer id)." >&2
@@ -124,5 +125,8 @@ codexbar_verify_dsym_matches_binary \
   "$DSYM_PATH/Contents/Resources/DWARF/$APP_NAME" \
   "${ARCH_LIST[@]}"
 "$DITTO_BIN" --norsrc -c -k --keepParent "$DSYM_PATH" "$DSYM_ZIP"
+
+echo "Packaging DMG"
+"$ROOT/Scripts/make_dmg.sh" "$APP_BUNDLE" "$DMG_NAME" "$APP_NAME"
 
 echo "Done: $ZIP_NAME"

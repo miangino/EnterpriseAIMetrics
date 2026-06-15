@@ -12,7 +12,6 @@ What is supported on Linux is the bundled CLI, which can be used for:
 ## Supported Linux install options
 
 - GitHub Release CLI tarballs
-- Homebrew formula
 - Arch Linux AUR package
 - Build from source
 
@@ -38,21 +37,14 @@ sudo install -m 0755 CodexBarCLI /usr/local/bin/codexbar
 codexbar --version
 ```
 
-## Option 2: Homebrew
-
-```bash
-brew install steipete/tap/codexbar
-codexbar --version
-```
-
-## Option 3: Arch Linux AUR
+## Option 2: Arch Linux AUR
 
 ```bash
 yay -S codexbar-cli
 codexbar --version
 ```
 
-## Option 4: Build from source
+## Option 3: Build from source
 
 Requirements:
 
