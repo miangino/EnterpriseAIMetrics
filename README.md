@@ -28,6 +28,7 @@ Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and
 Download:
 - macOS DMG: <https://github.com/miangino/EnterpriseAIMetrics/releases/latest>
 - macOS ZIP: <https://github.com/miangino/EnterpriseAIMetrics/releases>
+If macOS blocks the first launch, use **System Settings → Privacy & Security → Open Anyway** for `EnterpriseAIMetrics`.
 
 Detailed install guides:
 - [INSTALL-MAC.md](INSTALL-MAC.md)

@@ -35,6 +35,17 @@ mv EnterpriseAIMetrics.app /Applications/
 open /Applications/EnterpriseAIMetrics.app
 ```
 
+## First launch trust prompt
+
+If macOS says the app cannot be opened because it is from an unidentified developer, or the first launch is blocked by Gatekeeper:
+
+1. Close the warning window.
+2. Open **System Settings**.
+3. Go to **Privacy & Security**.
+4. Scroll to the Security section.
+5. Click **Open Anyway** for `EnterpriseAIMetrics`.
+6. Open the app again and confirm the launch dialog.
+
 ## Option 2: Build from source
 
 Requirements:
